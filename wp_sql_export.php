@@ -123,39 +123,50 @@ function wp_sql_export_page()
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var backupButton = document.getElementById('backup_button');
-            var dumpCommandTextarea = document.getElementById('dump_command');
+    document.addEventListener('DOMContentLoaded', function () {
+        var backupButton = document.getElementById('backup_button');
+        var dumpCommandTextarea = document.getElementById('dump_command');
 
-            backupButton.addEventListener('click', function (event) {
-                event.preventDefault();
+        backupButton.addEventListener('click', function (event) {
+            event.preventDefault();
 
-                // Realizar la solicitud AJAX para obtener el comando
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            // Actualizar el contenido del textarea con el comando
-                            dumpCommandTextarea.value = xhr.responseText;
+            // Realizar la solicitud AJAX para obtener el comando
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // Actualizar el contenido del textarea con el comando
+                        dumpCommandTextarea.value = xhr.responseText;
 
-                            swal({
-                                title: "Exportación exitosa!",
-                                icon: "success",
-                            });
-                        } else {
+                        swal({
+                            title: "Exportación exitosa!",
+                            icon: "success",
+                        });
+                    } else {
+                        // Mostrar el detalle del error en la alerta
+                        var errorDetail = "Error desconocido";
 
-                            swal({
-                                title: "Error en la exportación",
-                                // text: "{detalle}",
-                                icon: "warning", // "warning", "error", "success" and "info"
-                            });
+                        try {
+                            var response = JSON.parse(xhr.responseText);
+                            if (response.hasOwnProperty('detail')) {
+                                errorDetail = response.detail;
+                            }
+                        } catch (e) {
+                            // No se pudo analizar la respuesta JSON, se mantiene el mensaje de error genérico
                         }
+
+                        swal({
+                            title: "Error en la exportación",
+                            text: errorDetail,
+                            icon: "warning",
+                        });
                     }
-                };
-                xhr.open('GET', backupButton.href);
-                xhr.send();
-            });
+                }
+            };
+            xhr.open('GET', backupButton.href);
+            xhr.send();
         });
+    });
     </script>
     <?php
 }
