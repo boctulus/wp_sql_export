@@ -11,6 +11,19 @@
 require __DIR__ . '/config/constants.php';
 require __DIR__ . '/helpers/db_export.php';
 
+
+// Agrega una función para registrar y encolar el archivo JavaScript de SweetAlert
+add_action('admin_enqueue_scripts', 'wp_sql_export_enqueue_sweetalert');
+function wp_sql_export_enqueue_sweetalert()
+{
+    // Ruta relativa al archivo JavaScript de SweetAlert
+    $sweetalert_js = plugin_dir_url(__FILE__) . 'assets/third_party/sweetalert2/sweetalert.js';
+
+    // Registra y encola el archivo JavaScript de SweetAlert
+    wp_register_script('sweetalert', $sweetalert_js, array(), '1.0.0', true);
+    wp_enqueue_script('sweetalert');
+}
+
 // Acción que se ejecuta cuando se activa el plugin
 register_activation_hook(__FILE__, 'wp_sql_export_activate');
 function wp_sql_export_activate()
@@ -124,9 +137,18 @@ function wp_sql_export_page()
                         if (xhr.status === 200) {
                             // Actualizar el contenido del textarea con el comando
                             dumpCommandTextarea.value = xhr.responseText;
-                            alert('Exportación exitosa');
+
+                            swal({
+                                title: "Exportación exitosa!",
+                                icon: "success",
+                            });
                         } else {
-                            alert('Error en la exportación');
+
+                            swal({
+                                title: "Error en la exportación",
+                                // text: "{detalle}",
+                                icon: "warning", // "warning", "error", "success" and "info"
+                            });
                         }
                     }
                 };

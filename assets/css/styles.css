@@ -1,0 +1,22 @@
+.container {
+	width: 80%;
+	margin: 0 auto;
+	padding: 20px;
+	max-width:800px !important;
+}
+
+#notification_email {
+	margin: 1em 0 1em;
+}
+
+/*
+	Extras que podria utilizar
+*/
+
+#loading-text {
+	margin-top:-30px;
+}
+
+.danger-color {
+	color: #FF4500;
+}
