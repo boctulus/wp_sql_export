@@ -1,4 +1,35 @@
-<?php
+<?php 
+
+// helpers/db_export.php
+
+// Función para descargar el archivo de respaldo al finalizar el proceso
+function wp_sql_export_download_backup(string $sql_file) {
+    // Ruta completa del archivo de respaldo
+    $backup_file = plugin_dir_path( __FILE__ ) . "etc/$sql_file";
+    
+    // Verifica si el archivo existe
+    if ( file_exists( $backup_file ) ) {
+        // Establece las cabeceras para forzar la descarga
+        header( 'Content-Description: File Transfer' );
+        header( 'Content-Type: application/octet-stream' );
+        header( 'Content-Disposition: attachment; filename=' . basename( $backup_file ) );
+        header( 'Content-Transfer-Encoding: binary' );
+        header( 'Expires: 0' );
+        header( 'Cache-Control: must-revalidate' );
+        header( 'Pragma: public' );
+        header( 'Content-Length: ' . filesize( $backup_file ) );
+        
+        // Envía el contenido del archivo para descargar
+        readfile( $backup_file );
+        
+        // Elimina el archivo después de la descarga
+        unlink( $backup_file );
+    } else {
+        // Si el archivo no existe, muestra un mensaje de error
+        wp_die( 'El archivo de respaldo no se encontró.' );
+    }
+}
+
 
 // Función para realizar el backup de la base de datos
 function wp_sql_export_database() 
@@ -19,10 +50,10 @@ function wp_sql_export_database()
         // }
     } else {
         // Para Linux y macOS, se busca el comando mysqldump en el PATH
-        // exec( 'command -v mysqldump', $output, $return_code );
-        // if ( $return_code === 0 ) {
+        exec( 'command -v mysqldump', $output, $return_code );
+        if ( $return_code === 0 ) {
             $mysqldump_command = 'mysqldump';
-        // }
+        }
     }
     
     // Verifica si se encontró el comando mysqldump
@@ -32,11 +63,9 @@ function wp_sql_export_database()
     }
     
     // Genera el comando para crear el archivo de backup
-    $command = $mysqldump_command . ' --user=' . DB_USER . ' -p="' . DB_PASSWORD . '" --host=' . DB_HOST . ' ' . DB_NAME . ' > ' . $backup_file;
+    $command = $mysqldump_command . ' --user=' . DB_USER . ' -p=\'' . DB_PASSWORD . '\' --host=' . DB_HOST . ' ' . DB_NAME . ' > ' . "'$backup_file'";
 
-    // Ejecuta el comando
-    exec( $command, $output );
-    file_put_contents('output.txt', $output);
+    return $command;
 }
 
 // Función para exportar imágenes de la galería
