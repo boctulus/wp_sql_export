@@ -1,0 +1,43 @@
+DOC MUTAWP Admin
+----------------
+
+- Ir a Google Console y obtener una API KEY 
+
+https://console.cloud.google.com/welcome
+
+
+New project > ENABLE APIS AND SERVICES > Google Drive API
+
+> ENABLE 
+
+Credentials 
+
+(.) User data
+( ) Application data
+
+luego ir a la opcion del menu izquiero que dice "Credentials"
+
+Enabled APIs &...
+Library
+Credentials <----- *
+...
+
+> OAuth consent screen
+
+User type
+
+(.) Internal (use) <--- intentar elegir esta
+( ) External
+
+Dominios
+
+Agregar mutawp.com
+
+Test users
+
+Agragar a boctulus@gmail.om
+
+> Add or remove scopes
+> Update selected scopes
+
+Credentials > CREATE CREDENTIALS > API KEYS

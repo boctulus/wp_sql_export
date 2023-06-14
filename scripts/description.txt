@@ -1,0 +1,17 @@
+Scripts
+-------
+
+Si los scripts son totalmente independientes de funciones de WordPress y de librerias dentro de plugins,
+entonces es posible ejecutarlos así:
+
+	/?pass=666&script={nombre_script}
+
+Esto puede ser particularmente útil para herramientas administrativas como off.php que desactiva un plugin
+y funcionará aún si el plugin o la instalación de WP está rota.
+
+Otros scripts útiles serían adminer, un admin de base de datos, un ftp o una terminal escritas en php
+
+
+Nota:
+
+Esto es posible si durante la instalacion se inserto un controlador dentro del index.php de WP

@@ -34,8 +34,10 @@ function wp_sql_export_download_backup(string $sql_file) {
 // Función para realizar el backup de la base de datos
 function wp_sql_export_database() 
 {    
-    // Nombre del archivo de backup
-    $backup_file = ETC_PATH . 'database_backup.sql';
+    global $wpdb;
+
+    $sql_file    = $wpdb->dbname . '.sql';
+    $backup_file = ETC_PATH . "$sql_file";
     
     // Verifica la plataforma del sistema operativo
     $platform = strtoupper( substr( PHP_OS, 0, 3 ) );

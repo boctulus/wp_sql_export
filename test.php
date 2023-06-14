@@ -1,12 +1,22 @@
 <?php
 
+
+use boctulus\SW\core\libs\Users;
+use boctulus\SW\core\libs\Logger;
+use boctulus\SW\core\libs\Strings;
+use boctulus\SW\core\libs\Products;
+use boctulus\SW\core\libs\ApiClient;
+use boctulus\SW\core\libs\ProductMetabox;
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 if (php_sapi_name() != "cli"){
-	// return; 
+	return; 
 }
+
+require_once __DIR__ . '/app.php';
 
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', realpath(__DIR__ . '/../../..') . DIRECTORY_SEPARATOR);
@@ -17,11 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /////////////////////////////////////////////////
 
-/*
-    Penosamente no se puede ejecuar el comando inclueyendo el password por politicas de seguridad
-*/
 
-wp_sql_export_database();
-
-// wp_sql_export_gallery_images();
-        
+dd(
+	Users::getCapabilities(['contributor', 'administrator'])
+);
